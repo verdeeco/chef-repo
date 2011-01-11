@@ -54,3 +54,11 @@ service "nginx" do
   supports :status => true, :restart => true, :reload => true
   action [ :enable, :start ]
 end
+
+bash "open port 80" do
+  code "(ufw allow 80)"
+end
+
+bash "open port 443" do
+  code "(ufw allow 443)"
+end
