@@ -26,7 +26,7 @@ apps.each do |app|
     mode 0600
     owner "root"
     group "root"
-    variables :deploy_keys => data["git"]["deploy_key"]
+    variables :deploy_key => data["git"]["deploy_key"]
   end
   
   git data["path"] do
@@ -40,6 +40,22 @@ apps.each do |app|
   runit_service app do
     template_name "apps"
     options data
+  end
+  
+  template "/etc/nginx/sites-available/#{app}" do
+    source "nginx_app.erb"
+    variables :config => data["nginx"]["config"]
+  end
+  
+  case data["nginx"]["status"]
+  when "enabled"
+    nginx_site app do
+      enable true
+    end
+  when "disabled"
+    nginx_site app do
+      enable false
+    end
   end
   
 end

@@ -7,17 +7,15 @@
 # All rights reserved - Do Not Redistribute
 #
 
-## TODO: deploy keys via databags
+deploy_keys = data_bag_item("deploy_keys", "website")
 
-#deploy_keys = data_bag_item("deploy_keys", "website")
-
-#template "/root/.ssh/id_rsa" do
-#  source "id_rsa.erb"
-#  mode 0600
-#  owner "root"
-#  group "root"
-#  variables :deploy_keys => deploy_keys
-#end
+template "/root/.ssh/id_rsa" do
+  source "id_rsa.erb"
+  mode 0600
+  owner "root"
+  group "root"
+  variables :deploy_key => deploy_key
+end
 
 git "/var/www/website" do
   repository "git@github.com:verdeeco/website.git"

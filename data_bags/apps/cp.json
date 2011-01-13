@@ -9,5 +9,20 @@
   "dependencies": {
       "python": ["simplejson", "psycopg2"]
       },  
-  "path": "/opt/verdeeco/apps"
+  "path": "/opt/verdeeco/apps",
+  "bind": {
+      "address": "127.0.0.100",
+      "port": "8001"
+      },
+  "nginx": {
+      "status": "enabled",
+      "config":"location /cp/cp_search/ {
+          proxy_pass http://localhost:5984/vdemo_customers/_fti/_design/search/customer;
+          proxy_buffering off;
+      }
+
+      location /cp/ {
+          proxy_pass http://127.0.0.100:8001/cp/;
+      }"
+  }
 }
