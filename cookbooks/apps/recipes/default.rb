@@ -7,30 +7,39 @@
 # All rights reserved - Do Not Redistribute
 #
 
-## TODO: deploy keys via databags
 
-#deploy_keys = data_bag_item("deploy_keys", "website")
+apps = data_bag("apps")
 
-#template "/root/.ssh/id_rsa" do
-#  source "id_rsa.erb"
-#  mode 0600
-#  owner "root"
-#  group "root"
-#  variables :deploy_keys => deploy_keys
-#end
+apps.each do |app|  
+  data = data_bag_item("apps", app)
 
-git "/opt/verdeeco/apps" do
-  repository "git@github.com:verdeeco/apps.git"
-  reference "HEAD"
-  revision "master"
-  action :checkout
-  user "root"
-  not_if "/usr/bin/test -d /var/www/website"
+  if data["dependencies"]["python"]
+    include_recipe "python"
+    
+    data["dependencies"]["python"].each do |dep|
+      easy_install_package dep
+    end
+  end
+
+  template "/root/.ssh/id_rsa" do
+    source "id_rsa.erb"
+    mode 0600
+    owner "root"
+    group "root"
+    variables :deploy_keys => data["git"]["deploy_key"]
+  end
+  
+  git data["path"] do
+    repository data["git"]["repo"]
+    reference "HEAD"
+    revision data["git"]["branch"]
+    action :checkout
+    user "root"
+  end
+  
+  runit_service app do
+    template_name "apps"
+    options data
+  end
+  
 end
-
-#%(cp lp map).each do |app|
-#  runit_service app do
-#    template_name "apps"
-#    options {"appname" => app}
-#  end
-#end
