@@ -1,0 +1,13 @@
+{
+  "id": "cp",
+  "bin_path": "/opt/verdeeco/apps/cp/ws/bin/ws",
+  "git": {
+      "repo": "git@github.com:verdeeco/apps.git",
+      "branch": "master",
+      "deploy_key": "asdf"
+      },
+  "dependencies": {
+      "python": ["simplejson", "psycopg2"]
+      },  
+  "path": "/opt/verdeeco/apps"
+}
