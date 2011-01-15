@@ -7,6 +7,8 @@
 # All rights reserved - Do Not Redistribute
 #
 
+include_recipe "nginx"
+include_recipe "apps:user"
 
 apps = data_bag("apps")
 
@@ -21,11 +23,11 @@ apps.each do |app|
     end
   end
 
-  template "/root/.ssh/id_rsa" do
+  template "/home/apps/.ssh/id_rsa" do
     source "id_rsa.erb"
     mode 0600
-    owner "root"
-    group "root"
+    owner "apps"
+    group "apps"
     variables :deploy_key => data["git"]["deploy_key"]
   end
   
@@ -34,7 +36,7 @@ apps.each do |app|
     reference "HEAD"
     revision data["git"]["branch"]
     action :checkout
-    user "root"
+    user "apps"
   end
   
   runit_service app do
