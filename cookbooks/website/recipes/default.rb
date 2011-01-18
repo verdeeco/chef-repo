@@ -11,6 +11,14 @@ include_recipe "nginx"
 
 deploy_key = data_bag_item("deploy_keys", "website")
 
+directory "/var/www/.ssh" do
+  owner "www-data"
+  group "www-data"
+  mode "0755"
+  action :create
+  recursive true
+end
+
 template "/var/www/.ssh/id_rsa" do
   source "id_rsa.erb"
   mode 0600
@@ -19,7 +27,7 @@ template "/var/www/.ssh/id_rsa" do
   variables :deploy_key => deploy_key
 end
 
-directory "/var/www/domains/verdeeco.com/htdocs" do
+directory "/var/www/domains/verdeeco.com" do
   owner "www-data"
   group "www-data"
   mode "0755"
@@ -35,8 +43,6 @@ git "/var/www/domains/verdeeco.com/htdocs" do
   user "www-data"
   not_if "/usr/bin/test -d /var/www/website"
 end
-
-runit_service "website"
 
 template "/etc/nginx/sites-available/website" do
   source "website.erb"
