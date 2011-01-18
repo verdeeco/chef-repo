@@ -1,54 +1,24 @@
 {
-  "id": "cp",
-  "bin_path": "/opt/verdeeco/apps/cp/ws/bin/ws",
-  "git": {
-      "repo": "git@github.com:verdeeco/apps.git",
-      "branch": "master",
-      "deploy_key": "-----BEGIN RSA PRIVATE KEY-----
-MIIEoQIBAAKCAQEAx094gYFBKRvfXuumdOCnficSUXKaSC5GYNquLf1k2XJiGyr7
-dZYehZYtbx+qgZ4rztgwCQrq6vqnDz4hBjCiEcnQjPvSDIGpvV6s7b386CRzujdA
-ubat8nCIK5jPQUmKhDkol/ajlrqdFWUueDalMwV/p9B8br2DjKAooosi+9tYDUD3
-VdkaOHLsB1t1XYXb0enfESmfVXN8cFyM/J8iehhz/3bQaFVXGWSLm1Usauys5ssY
-jXvkSzMCUEcmkLa8lctRW0m8Cmmxi0UcruN7plPcidJlgwb8RV3wGzKRA6ZTPNyA
-HcFMWuF/advb0ul/jhBAtMQr78cOUbeXfabIlQIBIwKCAQEApSSXDDfliHYuG3LL
-v+1XlGmENNtMojT4fCLoF3ou/VAlZve6aL42i/F2Gj7PGvDFNltbAC2eEyd0elgM
-u/xpB2y0HQsqYiJK0Bs+051rJr8eD1JaM3obGVXtK2/8LsfnzKRjdpkodZNO9Hho
-VPoT2dFbJKVuamKC8Nx5cLxtcZcD//tZVZLPqk57GdSqBUUyduRqwsX6BJ7Yj9GN
-mVarYefJKXsK50ixOE9V2m75YfWUnrwscyaM3RVPvp2PPe673FUa90E70m6DgqYI
-I7/vS7NwPY5OlPzBYMKxW5y+PB47tdpC87JuFiHlvStghbSxjehWj01d9OB6eSyh
-/QPlywKBgQD5Y48I1p4g9eXdk96zkht9nztFQJwU1JCQccwBq3lO6lEh19+irxcD
-mwIZWzIEIwXMKvh3uwlD5F+jay2Qb+5hxCKf97Px31HJWw9ev+ljaHUSLFMmpEf+
-FtWZw3eL3v03KdFCi6tJoPgLOiVyNX9gY0vKL9a2XIAUNp4tHDJJ8QKBgQDMmA/S
-IMeUss08FoTrxQ4Gz1RN7k8nysIbl5x2fZnqPO1fX3VwAzYK2VIlHgcncJJZgKjm
-ww8iiCOUuG0VY0cf0JFtiJ9V1NkmKJl/JO8jkw8N7+UmpoUdn0UWW+wxNGFPmKuL
-qcMT7qYPd4rjd6GyzvKs8nWaP5kogAbb19Dk5QKBgFWBOFrNPYekw9bw3qP3lGWV
-revbozpXggWjW+NQu+CK2fz5joDrktyqLJr6shAMAfzbiGOQlXZc7ZcdbrUtsNEQ
-C98TGR+6R+1DysFmXqW9afeaKyMxAr2EK/o0Y4BptecHBeruDtdqY6wT75TfJFuP
-wjaxUO4RFfhNPYvPJy9LAoGAaThCppSD5hLP8wREW/7xRVSvA4HfkM6s+D9Xx+jS
-0DyXVZ7OrqKQ0mEi7oR4tTKUaItPjJ7UlWqV9LaegAcr5HnkZDeiZqf6pej+e+cb
-5mjjK700BT+yLH3LwlspA1zEVNIsVnSQNiL2URjoV7neIXG+ohZLHCC1KsV/3sbD
-M+MCgYBTwMFaYNE91aVsjaX08lo/zetquQd5VKuRxCDsJi4GYfX4yO7HRgt4NZpw
-O943A1KtkpCsi4elX4U4zOEr1U9oGJpNeIMmmXDQ9ZzfLpbcQphBZ4yHSVWrDnNZ
-myfi0U8MfeKb7YWtORU2OPbVMTOju8AC8GljYHEhNCIPdXXWGQ==
------END RSA PRIVATE KEY-----"
-      },
   "dependencies": {
-      "python": ["simplejson", "psycopg2"]
-      },  
-  "path": "/opt/verdeeco/apps",
-  "bind": {
-      "address": "127.0.0.100",
-      "port": "8001"
-      },
+    "python": [
+      "simplejson",
+      "psycopg2"
+    ]
+  },
   "nginx": {
-      "status": "enabled",
-      "config":"location /cp/cp_search/ {
-          proxy_pass http://localhost:5984/vdemo_customers/_fti/_design/search/customer;
-          proxy_buffering off;
-      }
-
-      location /cp/ {
-          proxy_pass http://127.0.0.100:8001/cp/;
-      }"
-  }
+    "config": "location /cp/cp_search/ {\n          proxy_pass http://localhost:5984/vdemo_customers/_fti/_design/search/customer;\n          proxy_buffering off;\n      }\n\n      location /cp/ {\n          proxy_pass http://127.0.0.100:8001/cp/;\n      }",
+    "status": "enabled"
+  },
+  "id": "cp",
+  "bind": {
+    "address": "127.0.0.100",
+    "port": "8001"
+  },
+  "path": "/opt/verdeeco/apps",
+  "git": {
+    "repo": "git@github.com:verdeeco/apps.git",
+    "branch": "master",
+    "deploy_key": "-----BEGIN RSA PRIVATE KEY-----\nMIIEoQIBAAKCAQEAx094gYFBKRvfXuumdOCnficSUXKaSC5GYNquLf1k2XJiGyr7\ndZYehZYtbx+qgZ4rztgwCQrq6vqnDz4hBjCiEcnQjPvSDIGpvV6s7b386CRzujdA\nubat8nCIK5jPQUmKhDkol/ajlrqdFWUueDalMwV/p9B8br2DjKAooosi+9tYDUD3\nVdkaOHLsB1t1XYXb0enfESmfVXN8cFyM/J8iehhz/3bQaFVXGWSLm1Usauys5ssY\njXvkSzMCUEcmkLa8lctRW0m8Cmmxi0UcruN7plPcidJlgwb8RV3wGzKRA6ZTPNyA\nHcFMWuF/advb0ul/jhBAtMQr78cOUbeXfabIlQIBIwKCAQEApSSXDDfliHYuG3LL\nv+1XlGmENNtMojT4fCLoF3ou/VAlZve6aL42i/F2Gj7PGvDFNltbAC2eEyd0elgM\nu/xpB2y0HQsqYiJK0Bs+051rJr8eD1JaM3obGVXtK2/8LsfnzKRjdpkodZNO9Hho\nVPoT2dFbJKVuamKC8Nx5cLxtcZcD//tZVZLPqk57GdSqBUUyduRqwsX6BJ7Yj9GN\nmVarYefJKXsK50ixOE9V2m75YfWUnrwscyaM3RVPvp2PPe673FUa90E70m6DgqYI\nI7/vS7NwPY5OlPzBYMKxW5y+PB47tdpC87JuFiHlvStghbSxjehWj01d9OB6eSyh\n/QPlywKBgQD5Y48I1p4g9eXdk96zkht9nztFQJwU1JCQccwBq3lO6lEh19+irxcD\nmwIZWzIEIwXMKvh3uwlD5F+jay2Qb+5hxCKf97Px31HJWw9ev+ljaHUSLFMmpEf+\nFtWZw3eL3v03KdFCi6tJoPgLOiVyNX9gY0vKL9a2XIAUNp4tHDJJ8QKBgQDMmA/S\nIMeUss08FoTrxQ4Gz1RN7k8nysIbl5x2fZnqPO1fX3VwAzYK2VIlHgcncJJZgKjm\nww8iiCOUuG0VY0cf0JFtiJ9V1NkmKJl/JO8jkw8N7+UmpoUdn0UWW+wxNGFPmKuL\nqcMT7qYPd4rjd6GyzvKs8nWaP5kogAbb19Dk5QKBgFWBOFrNPYekw9bw3qP3lGWV\nrevbozpXggWjW+NQu+CK2fz5joDrktyqLJr6shAMAfzbiGOQlXZc7ZcdbrUtsNEQ\nC98TGR+6R+1DysFmXqW9afeaKyMxAr2EK/o0Y4BptecHBeruDtdqY6wT75TfJFuP\nwjaxUO4RFfhNPYvPJy9LAoGAaThCppSD5hLP8wREW/7xRVSvA4HfkM6s+D9Xx+jS\n0DyXVZ7OrqKQ0mEi7oR4tTKUaItPjJ7UlWqV9LaegAcr5HnkZDeiZqf6pej+e+cb\n5mjjK700BT+yLH3LwlspA1zEVNIsVnSQNiL2URjoV7neIXG+ohZLHCC1KsV/3sbD\nM+MCgYBTwMFaYNE91aVsjaX08lo/zetquQd5VKuRxCDsJi4GYfX4yO7HRgt4NZpw\nO943A1KtkpCsi4elX4U4zOEr1U9oGJpNeIMmmXDQ9ZzfLpbcQphBZ4yHSVWrDnNZ\nmyfi0U8MfeKb7YWtORU2OPbVMTOju8AC8GljYHEhNCIPdXXWGQ==\n-----END RSA PRIVATE KEY-----"
+  },
+  "bin_path": "/opt/verdeeco/apps/cp/ws/bin/ws"
 }
