@@ -43,7 +43,7 @@ template "nginx.conf" do
   mode 0644
 end
 
-file "#{node[:nginx][:dir]}/sites-available/default" do
+file "#{node[:nginx][:dir]}/sites-enabled/default" do
  action :delete
 end
 

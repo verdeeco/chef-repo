@@ -8,13 +8,39 @@
 #
 
 include_recipe "nginx"
-include_recipe "apps:user"
+
+group "apps" do
+  gid 400
+end
+
+user "apps" do
+  uid 400
+  gid 400
+  shell "/bin/bash"
+  home "/home/apps"
+end
+
+directory "/home/apps/.ssh" do
+  owner "apps"
+  group "apps"
+  mode "0755"
+  action :create
+  recursive true
+end
 
 apps = data_bag("apps")
 
 apps.each do |app|  
   data = data_bag_item("apps", app)
 
+  # install os deps
+  if data["dependencies"]["os"]
+    data["dependencies"]["os"].each do |dep|
+      package dep
+    end
+  end
+  
+  # install python deps
   if data["dependencies"]["python"]
     include_recipe "python"
     
@@ -29,6 +55,13 @@ apps.each do |app|
     owner "apps"
     group "apps"
     variables :deploy_key => data["git"]["deploy_key"]
+  end
+  
+  directory "/opt/verdeeco" do
+    owner "apps"
+    group "apps"
+    mode "0755"
+    action :create
   end
   
   git data["path"] do
@@ -47,6 +80,7 @@ apps.each do |app|
   template "/etc/nginx/sites-available/#{app}" do
     source "nginx_app.erb"
     variables :config => data["nginx"]["config"]
+    notifies :reload, resources(:service => "nginx")
   end
   
   case data["nginx"]["status"]
