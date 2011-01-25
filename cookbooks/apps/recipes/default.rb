@@ -72,9 +72,11 @@ apps.each do |app|
     user "apps"
   end
   
-  runit_service app do
-    template_name "apps"
-    options data
+  data["app_scripts"].each do |script|
+    runit_service app do
+      template_name "apps"
+      options {:path => data["path"], :id => data["id"], :script => script}
+    end
   end
   
   template "/etc/nginx/sites-available/#{app}" do

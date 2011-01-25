@@ -1,3 +1,3 @@
 #!/bin/sh
 exec 2>&1
-exec chpst -u www-data <%= @options["bin_path"]%>
+exec chpst -u www-data <%= @options["path"]%>/<%= @options["id"]%>/ws/bin/<%= @options["script"]%>
