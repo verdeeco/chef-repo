@@ -11,7 +11,6 @@
     ]
   },
   "nginx": {
-    "config": "server {\nlocation /cp/cp_search/ {\n          proxy_pass http://localhost:5984/vdemo_customers/_fti/_design/search/customer;\n          proxy_buffering off;\n      }\n\n      location /cp/ {\n          proxy_pass http://127.0.0.100:8001/cp/;\n      }\n}",
     "status": "enabled"
   },
   "id": "cp",

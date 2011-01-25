@@ -79,7 +79,7 @@ apps.each do |app|
   
   template "/etc/nginx/sites-available/#{app}" do
     source "nginx_app.erb"
-    variables :config => data["nginx"]["config"]
+    variables :config => data
     notifies :reload, resources(:service => "nginx")
   end
   

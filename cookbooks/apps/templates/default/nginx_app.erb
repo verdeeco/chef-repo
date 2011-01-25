@@ -1,1 +1,12 @@
-<%= @config %>
+### nginx config for <%= @config["id"] %>
+
+server {
+  server_name <%= @config["id"] %>.apps.gridasaservice.com;
+  listen 80;  
+  
+  root <%= @config["path"] %>/<%= @config["id"] %>;
+  
+  location /ws {
+    proxy_pass http://<%= @config["bind"]["address"]:<%= @config["bind"]["port"] %> %>/;
+  }
+}
