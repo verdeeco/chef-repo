@@ -1,0 +1,15 @@
+{
+  "name": "app",
+  "default_attributes": {
+  },
+  "json_class": "Chef::Role",
+  "run_list": [
+    "recipe[base::default]",
+    "recipe[postgresql::client]",
+    "recipe[apps::default]"
+  ],
+  "description": "",
+  "chef_type": "role",
+  "override_attributes": {
+  }
+}

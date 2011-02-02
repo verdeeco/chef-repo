@@ -1,0 +1,15 @@
+{
+  "name": "database",
+  "default_attributes": {
+  },
+  "json_class": "Chef::Role",
+  "run_list": [
+    "recipe[base::default]",
+    "recipe[couchdb::default]",
+    "recipe[postgresql::server]"
+  ],
+  "description": "",
+  "chef_type": "role",
+  "override_attributes": {
+  }
+}
