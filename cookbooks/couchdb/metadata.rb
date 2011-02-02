@@ -1,0 +1,10 @@
+maintainer       "YOUR_COMPANY_NAME"
+maintainer_email "YOUR_EMAIL"
+license          "All rights reserved"
+description      "Installs/Configures couchdb"
+long_description "Installs/Configures couchdb"
+version          "0.0.1"
+
+depends "libicu"
+depends "spidermonkey"
+depends "runit"

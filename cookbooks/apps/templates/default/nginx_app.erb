@@ -4,9 +4,9 @@ server {
   server_name <%= @config["id"] %>.apps.gridasaservice.com;
   listen 80;  
   
-  root <%= @config["path"] %>/<%= @config["id"] %>;
+  root <%= @node[:apps][:install_path] %>/<%= @config["path"] %>/<%= @config["id"] %>;
   
   location /ws {
-    proxy_pass http://<%= @config["bind"]["address"] %>:<%= @config["bind"]["port"] %> /;
+    proxy_pass http://<%= @config["bind"]["address"] %>:<%= @config["bind"]["port"] %>;
   }
 }

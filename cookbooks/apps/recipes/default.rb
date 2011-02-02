@@ -10,12 +10,12 @@
 include_recipe "nginx"
 
 group "apps" do
-  gid 400
+  gid 450
 end
 
 user "apps" do
-  uid 400
-  gid 400
+  uid 450
+  gid 450
   shell "/bin/bash"
   home "/home/apps"
 end
@@ -57,14 +57,14 @@ apps.each do |app|
     variables :deploy_key => data["git"]["deploy_key"]
   end
   
-  directory "/opt/verdeeco" do
+  directory node[:apps][:install_path] do
     owner "apps"
     group "apps"
     mode "0755"
     action :create
   end
   
-  git data["path"] do
+  git "#{node[:apps][:install_path]}/#{data["path"]}" do
     repository data["git"]["repo"]
     reference "HEAD"
     revision data["git"]["branch"]
@@ -72,10 +72,13 @@ apps.each do |app|
     user "apps"
   end
   
-  data["app_scripts"].each do |script|
+  options = {:path => data["path"], :id => data["id"]}
+
+  data["app_scripts"].each do |app_script|
+    options.store(:script, app_script)
     runit_service app do
       template_name "apps"
-      options {:path => data["path"], :id => data["id"], :script => script}
+      options options
     end
   end
   

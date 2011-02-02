@@ -1,3 +1,3 @@
 #!/bin/sh
 exec 2>&1
-exec chpst -u www-data <%= @options["path"]%>/<%= @options["id"]%>/ws/bin/<%= @options["script"]%>
+exec chpst -u www-data <%= @node[:apps][:install_path]%>/<%= @options[:path]%>/<%= @options[:id]%>/ws/bin/<%= @options[:script]%>
