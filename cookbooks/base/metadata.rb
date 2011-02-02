@@ -7,3 +7,4 @@ version          "0.0.1"
 
 depends "git"
 depends "build-essential"
+depends "chef-client"

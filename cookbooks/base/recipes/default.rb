@@ -5,6 +5,6 @@
   package pkg
 end
 
-%w(git build-essential).each do |recipe|
+%w(git build-essential chef-client chef-client::config).each do |recipe|
   include_recipe recipe
 end
