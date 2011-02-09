@@ -7,9 +7,10 @@
 # All rights reserved - Do Not Redistribute
 #
 
+include_recipe "base"
 include_recipe "nginx"
 
-deploy_key = data_bag_item("deploy_keys", "website")
+deploy_key = data_bag_item("deploy_keys", "gaas")
 
 directory "/var/www/.ssh" do
   owner "www-data"
@@ -36,12 +37,10 @@ directory "/var/www/domains/verdeeco.com" do
 end
 
 git "/var/www/domains/verdeeco.com/htdocs" do
-  repository "git@github.com:verdeeco/website.git"
-  reference "HEAD"
-  revision "master"
-  action :checkout
+  repository "git@github.com:verdeeco/gaas.git"
+  reference "master"
+  action :sync
   user "www-data"
-  not_if "/usr/bin/test -d /var/www/website"
 end
 
 template "/etc/nginx/sites-available/website" do

@@ -1,25 +1,5 @@
 server {
     listen 80;
-    server_name verdeeco.com local.verdeeco.com ~^web\d+\.verdeeco\.com$;
+    server_name gridasaservice.com www.gridasaservice.com;
     root /var/www/domains/verdeeco.com/htdocs/static;
-    include /var/www/domains/verdeeco.com/htdocs/nginx-common.conf;
-
-    ## TODO: fix this up, iterate thru apps
-    
-    #location /auth/ {
-    #    proxy_pass http://localhost:8000/e/auth/;
-    #}
-    #location /apps/ {
-    #    root /var/www/verdeeco-apps;
-    #}
-    #location /e/ {
-    #    proxy_pass http://apps.verdeeco.com:8000;
-    #    proxy_buffering off;
-    #}
-    #location /p/ {
-    #    proxy_pass http://apps.verdeeco.com:8001;
-    #    proxy_buffering off;
-    #}
-    # include individual apps config
-    #include /var/www/verdeeco-apps/apps/*/nginx-production.conf;
 }
