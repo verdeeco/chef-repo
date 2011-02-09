@@ -1,0 +1,9 @@
+### nginx config for <%= @config["id"] %>
+
+server {
+  server_name <%= @config["id"] %>.apps.gridasaservice.com;
+  listen 80;  
+  
+  root <%= @node[:apps][:install_path] %>/<%= @config["path"] %>/<%= @config["id"] %>/static;
+  
+}

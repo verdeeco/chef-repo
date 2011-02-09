@@ -33,20 +33,24 @@ apps = data_bag("apps")
 apps.each do |app|  
   data = data_bag_item("apps", app)
 
-  # install os deps
-  if data["dependencies"]["os"]
-    data["dependencies"]["os"].each do |dep|
-      package dep
-    end
-  end
-  
-  # install python deps
-  if data["dependencies"]["python"]
-    include_recipe "python"
+  if data["dependencies"]
     
-    data["dependencies"]["python"].each do |dep|
-      easy_install_package dep
+    # install os deps
+    if data["dependencies"]["os"]
+      data["dependencies"]["os"].each do |dep|
+        package dep
+      end
     end
+    
+    # install python deps
+    if data["dependencies"]["python"]
+      include_recipe "python"
+      
+      data["dependencies"]["python"].each do |dep|
+        easy_install_package dep
+      end
+    end
+    
   end
 
   template "/home/apps/.ssh/id_rsa" do
@@ -66,26 +70,34 @@ apps.each do |app|
   
   git "#{node[:apps][:install_path]}/#{data["path"]}" do
     repository data["git"]["repo"]
-    reference "HEAD"
-    revision data["git"]["branch"]
-    action :checkout
+    reference data["git"]["branch"]
+    action :sync
     user "apps"
+    not_if "/usr/bin/test -d #{node[:apps][:install_path]}/#{data["path"]}"
   end
   
   options = {:path => data["path"], :id => data["id"]}
 
-  data["app_scripts"].each do |app_script|
-    options.store(:script, app_script)
-    runit_service app do
-      template_name "apps"
-      options options
+  if data["type"] == "dynamic"
+    data["app_scripts"].each do |app_script|
+      options.store(:script, app_script)
+      runit_service app do
+        template_name "apps"
+        options options
+      end
     end
-  end
-  
-  template "/etc/nginx/sites-available/#{app}" do
-    source "nginx_app.erb"
-    variables :config => data
-    notifies :reload, resources(:service => "nginx")
+    
+    template "/etc/nginx/sites-available/#{app}" do
+      source "nginx_dynamic_app.erb"
+      variables :config => data
+      notifies :reload, resources(:service => "nginx")
+    end
+  elsif data["type"] == "static"
+    template "/etc/nginx/sites-available/#{app}" do
+      source "nginx_static_app.erb"
+      variables :config => data
+      notifies :reload, resources(:service => "nginx")
+    end
   end
   
   case data["nginx"]["status"]

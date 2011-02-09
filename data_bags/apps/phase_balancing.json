@@ -1,28 +1,10 @@
 {
-  "dependencies": {
-    "python": [
-      "simplejson",
-      "psycopg2",
-      "itty",
-      "couchdbkit"
-    ],
-    "os": [
-      "libpq-dev"
-    ]
-  },
   "nginx": {
     "status": "enabled"
   },
-  "id": "cp",
-  "type": "dynamic",
-  "bind": {
-    "address": "127.0.0.1",
-    "port": "8001"
-  },
+  "id": "phase_balancing",
+  "type": "static",
   "path": "apps",
-  "app_scripts": [
-    "ws"
-  ],
   "git": {
     "repo": "git@github.com:verdeeco/apps.git",
     "branch": "master",
