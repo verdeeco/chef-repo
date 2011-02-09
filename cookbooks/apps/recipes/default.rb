@@ -28,6 +28,30 @@ directory "/home/apps/.ssh" do
   recursive true
 end
 
+deploy_key = data_bag_item("deploy_keys", "apps")
+
+template "/home/apps/.ssh/id_rsa" do
+  source "id_rsa.erb"
+  mode 0600
+  owner "apps"
+  group "apps"
+  variables :deploy_key => deploy_key
+end
+
+directory node[:apps][:install_path] do
+  owner "apps"
+  group "apps"
+  mode "0755"
+  action :create
+end
+
+git "#{node[:apps][:install_path]}/apps" do
+  repository "git@github.com:verdeeco/apps.git"
+  reference "master"
+  action :sync
+  user "apps"
+end
+
 apps = data_bag("apps")
 
 apps.each do |app|  
@@ -52,29 +76,6 @@ apps.each do |app|
     end
     
   end
-
-  template "/home/apps/.ssh/id_rsa" do
-    source "id_rsa.erb"
-    mode 0600
-    owner "apps"
-    group "apps"
-    variables :deploy_key => data["git"]["deploy_key"]
-  end
-  
-  directory node[:apps][:install_path] do
-    owner "apps"
-    group "apps"
-    mode "0755"
-    action :create
-  end
-  
-  git "#{node[:apps][:install_path]}/#{data["path"]}" do
-    repository data["git"]["repo"]
-    reference data["git"]["branch"]
-    action :sync
-    user "apps"
-    not_if "/usr/bin/test -d #{node[:apps][:install_path]}/#{data["path"]}"
-  end
   
   options = {:path => data["path"], :id => data["id"]}
 
@@ -85,29 +86,6 @@ apps.each do |app|
         template_name "apps"
         options options
       end
-    end
-    
-    template "/etc/nginx/sites-available/#{app}" do
-      source "nginx_dynamic_app.erb"
-      variables :config => data
-      notifies :reload, resources(:service => "nginx")
-    end
-  elsif data["type"] == "static"
-    template "/etc/nginx/sites-available/#{app}" do
-      source "nginx_static_app.erb"
-      variables :config => data
-      notifies :reload, resources(:service => "nginx")
-    end
-  end
-  
-  case data["nginx"]["status"]
-  when "enabled"
-    nginx_site app do
-      enable true
-    end
-  when "disabled"
-    nginx_site app do
-      enable false
     end
   end
   

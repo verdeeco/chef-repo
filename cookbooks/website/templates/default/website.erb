@@ -2,4 +2,16 @@ server {
     listen 80;
     server_name gridasaservice.com www.gridasaservice.com;
     root /var/www/domains/verdeeco.com/htdocs/static;
+    
+    index index.html;
+    
+    include <%= @node[:apps][:install_path] %>/apps/*/nginx-production.conf;
+    
 }
+
+# weed out the stuff we don't want
+#server {
+#    listen       80  default;
+#    server_name  _;
+#    return       444;
+#}
