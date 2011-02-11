@@ -25,7 +25,7 @@ if ARGV[2]
   Net::SSH.start(ARGV[0], ARGV[1], :port => 22, :keys => [ARGV[2]], :paranoid => false ) do |ssh|
     output = ""
     commands.each_line do |command|
-      output = ssh.exec! command
+      output = ssh.exec! "sudo #{command}"
       puts output
     end
   end
