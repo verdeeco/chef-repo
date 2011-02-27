@@ -1,0 +1,4 @@
+#!/bin/bash
+exec 2>&1
+export HOME=<%= @node[:couchdb][:home_dir] %>
+exec chpst -u couchdb <%= @node[:couchdb_lucene][:install_path] %>/couchdb-lucene-<%= @node[:couchdb_lucene][:version] %>/bin/run
