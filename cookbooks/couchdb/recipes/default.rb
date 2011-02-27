@@ -2,6 +2,7 @@
 include_recipe "libicu"
 include_recipe "spidermonkey"
 include_recipe "runit"
+include_recipe "erlang::erl_call"
 
 group "couchdb" do
   gid 400
