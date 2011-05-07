@@ -1,0 +1,8 @@
+# blank server - no roles
+knife ec2 server create -I ami-08f40561 -f m1.large -S verdeeco_ec2_secondary -G default -i /home/jvincent/Development/verdeeco-chef/.chef/verdeeco_ec2_secondary.pem -x ubuntu -d ubuntu10.04-gems -N test-node-1 --sudo --no-host-key-verify
+
+# monolithic role
+knife ec2 server create -r "role[monolithic]" -I ami-08f40561 -f m1.large -S verdeeco_ec2_secondary -G default -i /home/jvincent/Development/verdeeco-chef/.chef/verdeeco_ec2_secondary.pem -x ubuntu -d sudo-ubuntu10.04-gems -N test-node-1 --no-host-key-verify
+
+# TODO
+Need to move the ssh known hosts to its own cookbook. Room for error. there

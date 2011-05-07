@@ -38,6 +38,16 @@ template "/home/apps/.ssh/id_rsa" do
   variables :deploy_key => deploy_key
 end
 
+# TODO This needs to be moved out globally
+# We're doing this same thing in two recipes
+# Ripe for failure if we forget to update one and not the other
+cookbook_file "/home/apps/.ssh/known_hosts" do
+  source "known_hosts"
+  mode 0644
+  owner "apps"
+  group "apps"
+end
+
 directory node[:apps][:install_path] do
   owner "apps"
   group "apps"

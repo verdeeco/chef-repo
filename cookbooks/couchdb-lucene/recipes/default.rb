@@ -46,8 +46,14 @@ erl_call "set fti external" do
   not_if do (`cat #{node[:couchdb][:install_path]}/etc/local.ini`.include?("external")) end
 end
 
+
+fti_code =<<EOFTI
+couch_config:set("httpd_db_handlers", "_fti", "{couch_httpd_external, handle_external_req, <<""fti"">>}").
+
+EOFTI
 erl_call "set _fti httpd_db_handlers" do
-  code "couch_config:set(\"httpd_db_handlers\", \"_fti\", \"{couch_httpd_external, handle_external_req, <<\"\"fti\"\">>}\").\r"
+#  code "couch_config:set(\"httpd_db_handlers\", \"_fti\", \"{couch_httpd_external, handle_external_req, <<\"\"fti\"\">>}\").\r"
+  code fti_code
   cookie node[:couchdb][:erlang][:cookie]
   name_type "name"
   node_name "#{node[:couchdb][:erlang][:name]}@#{node[:fqdn]}"

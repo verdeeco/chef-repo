@@ -29,6 +29,16 @@ template "/var/www/.ssh/id_rsa" do
   variables :deploy_key => deploy_key
 end
 
+# TODO This needs to be moved out globally
+# We're doing this same thing in two recipes
+# Ripe for failure if we forget to update one and not the other
+cookbook_file "/var/www/.ssh/known_hosts" do
+  source "known_hosts"
+  mode 0644
+  owner "www-data"
+  group "www-data"
+end
+
 directory "/var/www/domains/verdeeco.com" do
   owner "www-data"
   group "www-data"
