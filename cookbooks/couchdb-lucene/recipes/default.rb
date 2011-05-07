@@ -48,8 +48,7 @@ end
 
 
 fti_code =<<EOFTI
-couch_config:set("httpd_db_handlers", "_fti", "{couch_httpd_external, handle_external_req, <<""fti"">>}").
-
+couch_config:set("httpd_db_handlers", "_fti", "{couch_httpd_external, handle_external_req, <<"fti">>}").
 EOFTI
 erl_call "set _fti httpd_db_handlers" do
 #  code "couch_config:set(\"httpd_db_handlers\", \"_fti\", \"{couch_httpd_external, handle_external_req, <<\"\"fti\"\">>}\").\r"
