@@ -1,8 +1,23 @@
 # blank server - no roles
-knife ec2 server create -I ami-08f40561 -f m1.large -S verdeeco_ec2_secondary -G default -i /home/jvincent/Development/verdeeco-chef/.chef/verdeeco_ec2_secondary.pem -x ubuntu -d ubuntu10.04-gems -N test-node-1 --sudo --no-host-key-verify
+knife ec2 server create -I ami-08f40561 -f m1.large -S verdeeco_ec2_secondary -G default -i /home/whatever/.ssh/verdeeco_ec2_secondary.pem -x ubuntu -d ubuntu10.04-gems -N test-node-1 --sudo --no-host-key-verify
 
 # monolithic role
-knife ec2 server create -r "role[monolithic]" -I ami-08f40561 -f m1.large -S verdeeco_ec2_secondary -G default -i /home/jvincent/Development/verdeeco-chef/.chef/verdeeco_ec2_secondary.pem -x ubuntu -d sudo-ubuntu10.04-gems -N test-node-1 --no-host-key-verify
+knife ec2 server create -r "role[monolithic]" -I ami-08f40561 -f m1.large -S verdeeco_ec2_secondary -G default -i /home/whatever/.ssh/verdeeco_ec2_secondary.pem -x ubuntu -d sudo-ubuntu10.04-gems -N test-node-1 --no-host-key-verify
+
+A few notes
+-----------
+- The first line creates a blank server added to the platform
+- The second line creates a new server mimicing the one you already had running (I don't think it has any data though?)
+- You'll want to change "-N test-node-1" to some relevant name or you can remove it all together. If you do, it will just use the EC2 name. I personally like descriptive node names. They obviously lose value when you start scaling up and down automatically.
+- "-S verdeeco_ec2_secondary" refers to the keypair that you can generate with EC2. Since I didn't have the original, I generated my own. You'd probably want to use the verdeeco_ec2_us_east. 
+- "-G default" is the EC2 security group. If you start creating distinct groups with permissions, you'll want to change that reflective of the node
+- There's a sample knife.rb checked in to source control for the repo under .chef. You can generate a user key on the opscode side that you can save in the .chef directory and change it to match that user.
+
+Nice to have
+------------
+- You'll probably need a users data bag/cookbook at some point to create some default user level accounts. My company currently uses a data bag that allows users to provide thier public key and it will automatically get added
+- The current cookbooks and databags have EC2 credentials in plain text. Since you're hosted on the platform, you probably want to move those to encrypted databags. 
+- It would be nice to be able to populate a subset of data on bootstrap but that's application specific. I have a cookbook that I wrote that can pull files from S3 so that would be the easiest way.
 
 # TODO
-Need to move the ssh known hosts to its own cookbook. Room for error. there
+Need to move the ssh known hosts to its own cookbook. Room for error there.
