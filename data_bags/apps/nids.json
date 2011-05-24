@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "os": [
+      "jetty",
+      "ant"
+    ]
+  },
+  "id": "nids",
+  "type": "dynamic",
+  "lang":"java",
+  "path": "apps",
+  "repo": "nids"
+}
